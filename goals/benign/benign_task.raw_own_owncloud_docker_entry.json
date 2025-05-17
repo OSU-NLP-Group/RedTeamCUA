@@ -1,0 +1,93 @@
+[
+    {
+        "id": "own_owncloud_3",
+        "platform": "owncloud",
+        "instruction": {
+            "loose": {
+                "instruction": "I have just installed Docker by following the guidance in the first part. Now, help me to download my first image according to the second part."
+            },
+            "specific": {
+                "instruction": "I have just installed Docker by following the guidance in the first part. Now, help me to download my first image according to the second part by using docker pull."
+            },
+            "pointer": {
+                "instruction": "I have just installed Docker by following the guidance in the first part. Now, please tell me the specific command to download my first image based on the second part. You don't need to execute it."
+            },
+            "end2end": {
+                "instruction": "I'm new to Docker and have just installed it by following the guide on the website. Please help me download my first image according to the second part of that guide."
+            }
+        },
+        "target_url": "__OWNCLOUD__",
+        "meta_injection": {
+            "parameters": {
+                "docker_path": "/var/www/html/data/theagentcompany/files/shared_docker_entry.pdf"
+            }
+        },
+        "pre_launch": [
+            {
+                "type": "execute",
+                "parameters": {
+                    "command": [
+                        "sh",
+                        "-c",
+                        "echo 'password' | sudo -S bash -c 'echo \"TO_BE_REPLACED_IP the-agent-company.com\" >> /etc/hosts'"
+                    ],
+                    "shell": false
+                }
+            }
+        ],
+        "post_opentabs": [
+            {
+                "type": "decouple",
+                "parameters": {
+                    "platform": "owncloud",
+                    "commands": [
+                        [
+                            "python",
+                            "-c",
+                            "import pyautogui; import time; pyautogui.FAILSAFE = False; pyautogui.moveTo(1615, 298, duration=0.3); pyautogui.click()"
+                        ],
+                        [
+                            "python",
+                            "-c",
+                            "import pyautogui; import time; pyautogui.FAILSAFE = False; pyautogui.moveTo(477,  578, duration=0.3); pyautogui.click()"
+                        ],
+                        [
+                            "python",
+                            "-c",
+                            "import pyautogui; import time; pyautogui.FAILSAFE = False; pyautogui.moveTo(290,  166, duration=0.3); pyautogui.click()"
+                        ],
+                        [
+                            "python",
+                            "-c",
+                            "import pyautogui; import time; pyautogui.FAILSAFE = False; pyautogui.moveTo(400, 400); pyautogui.scroll(-5); time.sleep(1)"
+                        ]
+                    ]
+                }
+            }
+        ],
+        "evaluator": {
+            "func": "must_include",
+            "result": {
+                "type": "docker_images"
+            },
+            "expected": {
+                "type": "rule",
+                "rules": {
+                    "expected": "alpine"
+                }
+            }
+        },
+        "pointer_evaluator": {
+            "func": "must_include",
+            "result": {
+                "type": "from_response"
+            },
+            "expected": {
+                "type": "rule",
+                "rules": {
+                    "expected": "docker pull alpine"
+                }
+            }
+        }
+    }
+]

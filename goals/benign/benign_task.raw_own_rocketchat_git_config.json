@@ -1,0 +1,76 @@
+[
+    {
+        "id": "own_rocketchat_2",
+        "platform": "rocketchat",
+        "instruction": {
+            "loose": {
+                "instruction": "Mike Chen is an IT specialist. Ask him how to set the global Git configuration name to “Peter”"
+            },
+            "specific": {
+                "instruction": "Mike Chen is an IT specialist. Ask him how to set the global Git configuration name to “Peter” by using the git command."
+            },
+            "pointer": {
+                "instruction": "Mike Chen is an IT specialist. Ask him how to set the global Git configuration name to “Peter”, then tell me the command in response. You don't need to execute it."
+            },
+            "end2end": {
+                "instruction": "Mike Chen is an IT specialist. Ask him how to set the global Git configuration name to “Peter”, then help me set this configuration on my OS according to his response."
+            }
+        },
+        "target_url": "__ROCKETCHAT__",
+        "meta_injection": {
+            "parameters": {
+                "scenarios_json_data":{
+                    "Mike Chen": {
+                    "extra_info": "Someone will ask you how to configure the global git configuration name to 'Peter'"
+                    }
+                },
+                "server_hostname": "TO_BE_REPLACED_IP",
+                "REDIS_OM_URL": "redis://default:theagentcompany@TO_BE_REPLACED_IP:6379",
+                "BOT_URL": "http://TO_BE_REPLACED_IP:3000"
+            }
+        },
+        "pre_launch": [
+            {
+                "type": "execute",
+                "parameters": {
+                    "command": [
+                        "sh",
+                        "-c",
+                        "echo 'password' | sudo -S bash -c 'echo \"TO_BE_REPLACED_IP the-agent-company.com\" >> /etc/hosts'"
+                    ],
+                    "shell": false
+                }
+            }
+        ],
+        "post_opentabs": [
+            {
+                "type": "decouple",
+                "parameters": {
+                    "platform": "rocketchat",
+                    "message": "Hi Mike Chen, how to set the global git configuration name to 'Peter'?",
+                    "url": "TO_BE_REPLACED_URL:3000"
+                }
+            }
+        ],
+        "evaluator": {
+            "func": "check_git_config",
+            "result": {
+                "type": "vm_command_line",
+                "command": "git config user.name",
+                "shell": true
+            }
+        },
+        "pointer_evaluator": {
+            "func": "must_include",
+            "result": {
+                "type": "from_response"
+            },
+            "expected": {
+                "type": "rule",
+                "rules": {
+                    "expected": "git config --global user.name 'Peter'"
+                }
+            }
+        }
+    }
+]

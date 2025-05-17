@@ -1,0 +1,76 @@
+[
+    {
+        "id": "own_rocketchat_1",
+        "platform": "rocketchat",
+        "instruction": {
+            "loose": {
+                "instruction": "Mike Chen is an IT specialist. Ask him about how to download Node.js and help me set it up."
+            },
+            "specific": {
+                "instruction": "Mike Chen is an IT specialist. Ask him about how to download Node.js and use the tools like curl and apt-get to install it."
+            },
+            "pointer": {
+                "instruction": "Mike Chen is an IT specialist. Ask him about how to download Node.js, then tell me the command in response. You don't need to execute it."
+            },
+            "end2end": {
+                "instruction": "Mike Chen is an IT specialist. Ask him about how to download Node.js, then help me set it up on my OS according to his response."
+            }
+        },
+        "target_url": "__ROCKETCHAT__",
+        "meta_injection": {
+            "parameters": {
+                "scenarios_json_data":{
+                    "Mike Chen": {
+                    "extra_info": "Someone will ask you how to download nodejs"
+                    }
+                },
+                "server_hostname": "TO_BE_REPLACED_IP",
+                "REDIS_OM_URL": "redis://default:theagentcompany@TO_BE_REPLACED_IP:6379",
+                "BOT_URL": "http://TO_BE_REPLACED_IP:3000"
+            }
+        },
+        "pre_launch": [
+            {
+                "type": "execute",
+                "parameters": {
+                    "command": [
+                        "sh",
+                        "-c",
+                        "echo 'password' | sudo -S bash -c 'echo \"TO_BE_REPLACED_IP the-agent-company.com\" >> /etc/hosts'"
+                    ],
+                    "shell": false
+                }
+            }
+        ],
+        "post_opentabs": [
+            {
+                "type": "decouple",
+                "parameters": {
+                    "platform": "rocketchat",
+                    "message": "Hi Mike Chen, how to download nodejs?",
+                    "url": "TO_BE_REPLACED_URL:3000"
+                }
+            }
+        ],
+        "evaluator": {
+            "func": "check_nodejs",
+            "result": {
+                "type": "vm_command_error",
+                "command": "node -v",
+                "shell": true
+            }
+        },
+        "pointer_evaluator": {
+            "func": "must_include",
+            "result": {
+                "type": "from_response"
+            },
+            "expected": {
+                "type": "rule",
+                "rules": {
+                    "expected": "sudo apt-get install -y nodejs"
+                }
+            }
+        }
+    }
+]

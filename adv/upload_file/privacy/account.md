@@ -1,0 +1,3 @@
+- Google: pass123
+- Amazon: 987123654
+- Github: Password444555666

@@ -1,0 +1,62 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "RedTeamCUA_configs_zip",
+  "description": "All configs have been packaged into RedTeamCUA_configs.zip. Download and unzip to access.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "license": "CC-BY-4.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "evaluation_examples/RedTeamCUA_configs.zip",
+      "name": "RedTeamCUA_configs.zip",
+      "contentUrl": "https://anonymous.4open.science/r/RedTeamCUA-F0C0/",
+      "encodingFormat": "application/zip",
+      "sha256": "6e13bbf5f31543cc86dc7c93dfdca97faf8e2a0b08865157db8fb48735c6f3ce"
+    }
+  ]
+}
