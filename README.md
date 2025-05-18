@@ -1,6 +1,6 @@
 # RedTeamCUA: Towards Realistic Adversarial Testing of CUAs in Hybrid Web-OS Environments
 
-
+<!-- 
 ## 🎥 Video Examples
 The following videos showcase examples where indirect prompt injection on three different web platforms (Forum, OwnCloud, and RocketChat) successfully attacks the CUA under either the **Decoupled** or the **End-to-End** setting. Each pair of examples targets the fundamental violation of Integrity, Availability, and Confidentiality, respectively.
 
@@ -8,8 +8,7 @@ The following videos showcase examples where indirect prompt injection on three 
 | :---: | :---: | :---: |
 | Claude 3.7 Sonnet CUA | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/reddit_decoupled.mp4">reddit_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/reddit_end2end.mp4">reddit_end2end.mp4</a> |
 | Operator              | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/owncloud_decoupled.mp4">owncloud_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/owncloud_end2end.mp4">owncloud_end2end.mp4</a> |
-| Claude 3.7 Sonnet CUA | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/rocketchat_decoupled.mp4">rocketchat_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/rocketchat_end2end.mp4">rocketchat_end2end.mp4</a> |
-
+| Claude 3.7 Sonnet CUA | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/rocketchat_decoupled.mp4">rocketchat_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/rocketchat_end2end.mp4">rocketchat_end2end.mp4</a> | -->
 
 ## 🛠️ Setup
 
