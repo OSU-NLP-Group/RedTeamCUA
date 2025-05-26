@@ -367,20 +367,12 @@ class PromptAgent:
             elif self.model == "gpt-4o":
                 system_message = self.system_message + SYS_PROMPT_ADDTIONAL + "\nYou are asked to complete the following task: {}".format(instruction)
 
-        elif self.provider == "aws":
-            if self.model == "us.anthropic.claude-3-7-sonnet-20250219-v1:0":
-                if self.cua:
-                    system_message = SYS_PROMPT_FOR_COMPUTER_USE_AGENT  + "\nYou are asked to complete the following task: {}".format(instruction)
+        elif self.provider == "aws" and "anthropic" in self.model:
+            if self.cua:
+                system_message = SYS_PROMPT_FOR_COMPUTER_USE_AGENT  + "\nYou are asked to complete the following task: {}".format(instruction)
 
-                else:
-                    system_message = self.system_message + SYS_PROMPT_ADDTIONAL + "\nYou are asked to complete the following task: {}".format(instruction)
-
-            elif self.model == "us.anthropic.claude-3-5-sonnet-20241022-v2:0":
-                if self.cua:
-                    system_message = SYS_PROMPT_FOR_COMPUTER_USE_AGENT  + "\nYou are asked to complete the following task: {}".format(instruction)
-
-                else:
-                    system_message = self.system_message + SYS_PROMPT_ADDTIONAL + "\nYou are asked to complete the following task: {}".format(instruction)
+            else:
+                system_message = self.system_message + SYS_PROMPT_ADDTIONAL + "\nYou are asked to complete the following task: {}".format(instruction)
 
         ### Defense System Message
         # system_message += SYS_DEFENSE_PROMPT
@@ -685,6 +677,8 @@ class PromptAgent:
 
         return response, actions, self.tool_call_in_last_step
 
+
+
     @backoff.on_exception(
         backoff.constant,
         # here you should add more model exceptions as you want,
@@ -790,218 +784,157 @@ class PromptAgent:
 
 
             elif self.provider == "aws":
-                if self.model == "us.anthropic.claude-3-7-sonnet-20250219-v1:0":
-                    if self.cua:
-                        # For claude-3.7 with tool_use
-                        if len(self.claude_responses) > self.max_trajectory_length:
-                            if self.claude_responses == 0:
-                                claude_responses = []
-                                tool_use_ids = []
-                            else:
-                                claude_responses = self.claude_responses[-self.max_trajectory_length:]
-                                tool_use_ids = self.tool_use_ids[-self.max_trajectory_length:]
-
-                        else:
-                            claude_responses = self.claude_responses
-                            tool_use_ids = self.tool_use_ids
-
-                        assert len([msg for msg in payload["messages"] if msg["role"] == "assistant"]) == len(claude_responses), "assistant messages and claude responses don't match!"
-
-                        claude_messages = convert_for_claude_cua(payload, claude_responses, tool_use_ids)
-
-                        response = self.client.beta.messages.create(
-                            model=self.model,
-                            max_tokens=self.max_tokens,
-                            messages=claude_messages,
-                            tools=[
-                                {
-                                "type": "computer_20250124",
-                                "name": "computer",
-                                "display_width_px": 1366,
-                                "display_height_px": 768
-                                },
-                                {
-                                "type": "text_editor_20250124",
-                                "name": "str_replace_editor"
-                                },
-                                {
-                                "type": "bash_20250124",
-                                "name": "bash"
-                                }
-                            ],
-                            betas=["computer-use-2025-01-24"],
-                            thinking={"type": "enabled", "budget_tokens": 1024}
-                        )
-
-                        logger.info(f"Step {len(self.observations)}\n[FIRST CALL]: {response.content}")
-
-                        self.claude_responses.append(response.content)
-
-                        tool_results = [block for block in response.content if block.type == "tool_use"]
-
-                        tool_result_list = []
-                        for tool_result in tool_results:
-                            tool_result_list.append(tool_result.id)
-                            self.tool_call_in_last_step = True
-
-                        self.tool_use_ids.append(tool_result_list)
-
-                        return response.content
-                    
-                    else:
-                        # For claude-3.7 without tool_use
-                        messages = payload["messages"]
-                        max_tokens = payload["max_tokens"]
-                        top_p = payload["top_p"]
-                        temperature = payload["temperature"]
-
-                        claude_messages = []
-
-                        for i, message in enumerate(messages):
-                            claude_message = {
-                                "role": message["role"],
-                                "content": []
-                            }
-                            assert len(message["content"]) in [1, 2], "One text, or one text with one image"
-                            for part in message["content"]:
-
-                                if part['type'] == "image_url":
-                                    image_source = {}
-                                    image_source["type"] = "base64"
-                                    image_source["media_type"] = "image/png"
-                                    image_source["data"] = part['image_url']['url'].replace("data:image/png;base64,", "")
-                                    claude_message['content'].append({"type": "image", "source": image_source})
-
-                                if part['type'] == "text":
-                                    claude_message['content'].append({"type": "text", "text": part['text']})
-
-                            claude_messages.append(claude_message)
-
-                        # the claude not support system message in our endpoint, so we concatenate it at the first user message
-                        if claude_messages[0]['role'] == "system":
-                            claude_system_message_item = claude_messages[0]['content'][0]
-                            claude_messages[1]['content'].insert(0, claude_system_message_item)
-                            claude_messages.pop(0)
-
-                        response = self.client.messages.create(
-                            model=self.model,
-                            max_tokens=max_tokens,
-                            messages=claude_messages,
-                            # thinking={"type": "enabled", "budget_tokens": 1024}
-                        )
-
-                        return response.content[0].text
-                
-                elif self.model == "us.anthropic.claude-3-5-sonnet-20241022-v2:0":
-                    if self.cua:
-                        # For claude-3.5 with tool_use
-                        if len(self.claude_responses) > self.max_trajectory_length:
-                            if self.claude_responses == 0:
-                                claude_responses = []
-                                tool_use_ids = []
-                            else:
-                                claude_responses = self.claude_responses[-self.max_trajectory_length:]
-                                tool_use_ids = self.tool_use_ids[-self.max_trajectory_length:]
-
-                        else:
-                            claude_responses = self.claude_responses
-                            tool_use_ids = self.tool_use_ids
-
-                        assert len([msg for msg in payload["messages"] if msg["role"] == "assistant"]) == len(claude_responses), "assistant messages and claude responses don't match!"
-
-                        claude_messages = convert_for_claude_cua(payload, claude_responses, tool_use_ids)
-
-                        response = self.client.beta.messages.create(
-                            model=self.model,
-                            max_tokens=self.max_tokens,
-                            messages=claude_messages,
-                            tools=[
-                                {
+                if self.cua:
+                    # with tool_use
+                    tools = {
+                        "us.anthropic.claude-3-5-sonnet-20241022-v2:0": [
+                            {
                                 "type": "computer_20241022",
                                 "name": "computer",
                                 "display_width_px": 1366,
                                 "display_height_px": 768
-                                },
-                                {
+                            },
+                            {
                                 "type": "text_editor_20241022",
                                 "name": "str_replace_editor"
-                                },
-                                {
+                            },
+                            {
                                 "type": "bash_20241022",
                                 "name": "bash"
-                                }
-                            ],
-                            betas=["computer-use-2024-10-22"]
-                        )
-
-                        logger.info(f"Step {len(self.observations)}\n[FIRST CALL]: {response.content}")
-
-                        self.claude_responses.append(response.content)
-
-                        tool_results = [block for block in response.content if block.type == "tool_use"]
-
-                        tool_result_list = []
-                        for tool_result in tool_results:
-                            tool_result_list.append(tool_result.id)
-                            self.tool_call_in_last_step = True
-
-                        self.tool_use_ids.append(tool_result_list)
-                        
-                        return response.content
-                    
-                    else:
-                        # For claude-3.5 without tool_use
-                        messages = payload["messages"]
-                        max_tokens = payload["max_tokens"]
-                        top_p = payload["top_p"]
-                        temperature = payload["temperature"]
-
-                        claude_messages = []
-
-                        for i, message in enumerate(messages):
-                            claude_message = {
-                                "role": message["role"],
-                                "content": []
                             }
-                            assert len(message["content"]) in [1, 2], "One text, or one text with one image"
-                            for part in message["content"]:
+                        ],
+                        "us.anthropic.claude-3-7-sonnet-20250219-v1:0": [
+                            {
+                                "type": "computer_20250124",
+                                "name": "computer",
+                                "display_width_px": 1366,
+                                "display_height_px": 768
+                            },
+                            {
+                                "type": "text_editor_20250124",
+                                "name": "str_replace_editor"
+                            },
+                            {
+                                "type": "bash_20250124",
+                                "name": "bash"
+                            }
+                        ],
+                        "us.anthropic.claude-opus-4-20250514-v1:0": [
+                            {
+                                "type": "computer_20250124",
+                                "name": "computer",
+                                "display_width_px": 1366,
+                                "display_height_px": 768
+                            },
+                            {
+                                "type": "text_editor_20250429",
+                                "name": "str_replace_based_edit_tool"
+                            },
+                            {
+                                "type": "bash_20250124",
+                                "name": "bash"
+                            }
+                        ]
+                    }
+                        
+                    if len(self.claude_responses) > self.max_trajectory_length:
+                        if self.claude_responses == 0:
+                            claude_responses = []
+                            tool_use_ids = []
+                        else:
+                            claude_responses = self.claude_responses[-self.max_trajectory_length:]
+                            tool_use_ids = self.tool_use_ids[-self.max_trajectory_length:]
 
-                                if part['type'] == "image_url":
-                                    image_source = {}
-                                    image_source["type"] = "base64"
-                                    image_source["media_type"] = "image/png"
-                                    image_source["data"] = part['image_url']['url'].replace("data:image/png;base64,", "")
-                                    claude_message['content'].append({"type": "image", "source": image_source})
+                    else:
+                        claude_responses = self.claude_responses
+                        tool_use_ids = self.tool_use_ids
 
-                                if part['type'] == "text":
-                                    claude_message['content'].append({"type": "text", "text": part['text']})
+                    assert len([msg for msg in payload["messages"] if msg["role"] == "assistant"]) == len(claude_responses), "assistant messages and claude responses don't match!"
 
-                            claude_messages.append(claude_message)
+                    claude_messages = convert_for_claude_cua(payload, claude_responses, tool_use_ids)
 
-                        # the claude not support system message in our endpoint, so we concatenate it at the first user message
-                        if claude_messages[0]['role'] == "system":
-                            claude_system_message_item = claude_messages[0]['content'][0]
-                            claude_messages[1]['content'].insert(0, claude_system_message_item)
-                            claude_messages.pop(0)
+                    create_args = {
+                        "model": self.model,
+                        "max_tokens": self.max_tokens,
+                        "messages": claude_messages,
+                        "tools": tools[self.model],
+                    }
 
-                        response = self.client.messages.create(
-                            model=self.model,
-                            max_tokens=max_tokens,
-                            messages=claude_messages,
-                            # thinking={"type": "enabled", "budget_tokens": 1024}
-                        )
+                    if self.model == "us.anthropic.claude-3-5-sonnet-20241022-v2:0":
+                        create_args["betas"] = ["computer-use-2024-10-22"]
+                    else:
+                        create_args["betas"] = ["computer-use-2025-01-24"]
+                        create_args["thinking"] = {"type": "enabled", "budget_tokens": 1024} 
 
-                        return response.content[0].text
+                    response = self.client.beta.messages.create(**create_args)
 
+                    logger.info(f"Step {len(self.observations)}\n[FIRST CALL]: {response.content}")
+
+                    self.claude_responses.append(response.content)
+
+                    tool_results = [block for block in response.content if block.type == "tool_use"]
+
+                    tool_result_list = []
+                    for tool_result in tool_results:
+                        tool_result_list.append(tool_result.id)
+                        self.tool_call_in_last_step = True
+
+                    self.tool_use_ids.append(tool_result_list)
+
+                    return response.content
+                
                 else:
-                    raise ValueError("Invalid model: " + self.provider + ": " + self.model)
-            
+                    # without tool_use
+                    messages = payload["messages"]
+                    max_tokens = payload["max_tokens"]
+                    top_p = payload["top_p"]
+                    temperature = payload["temperature"]
+
+                    claude_messages = []
+
+                    for i, message in enumerate(messages):
+                        claude_message = {
+                            "role": message["role"],
+                            "content": []
+                        }
+                        assert len(message["content"]) in [1, 2], "One text, or one text with one image"
+                        for part in message["content"]:
+
+                            if part['type'] == "image_url":
+                                image_source = {}
+                                image_source["type"] = "base64"
+                                image_source["media_type"] = "image/png"
+                                image_source["data"] = part['image_url']['url'].replace("data:image/png;base64,", "")
+                                claude_message['content'].append({"type": "image", "source": image_source})
+
+                            if part['type'] == "text":
+                                claude_message['content'].append({"type": "text", "text": part['text']})
+
+                        claude_messages.append(claude_message)
+
+                    # the claude not support system message in our endpoint, so we concatenate it at the first user message
+                    if claude_messages[0]['role'] == "system":
+                        claude_system_message_item = claude_messages[0]['content'][0]
+                        claude_messages[1]['content'].insert(0, claude_system_message_item)
+                        claude_messages.pop(0)
+
+                    response = self.client.messages.create(
+                        model=self.model,
+                        max_tokens=max_tokens,
+                        messages=claude_messages,
+                        # thinking={"type": "enabled", "budget_tokens": 1024}
+                    )
+
+                    return response.content[0].text
+                
             else:
                 raise ValueError("Invalid provider: " + self.provider)
 
         else:
             logger.error("")
             raise ValueError("Invalid provider: " + self.provider)
+
+
 
     # second call
     def convert_to_pyautogui(self, first_call_response):
@@ -1101,7 +1034,7 @@ class PromptAgent:
 
                     idx = second_call_response["python_code"].rfind("```")
                     if idx != -1:
-                        added_code = second_call_response["python_code"][:idx] + "\ntime.sleep(1)\n" + second_call_response["python_code"][idx:]
+                        added_code = second_call_response["python_code"][:idx] + "\ntime.sleep(5)\n" + second_call_response["python_code"][idx:]
                         second_call_response["python_code"] = added_code
                     return second_call_response["python_code"]
                 
@@ -1140,7 +1073,7 @@ class PromptAgent:
 
                 idx = text_results[0].text.rfind("```")
                 if idx != -1:
-                    added_code = text_results[0].text[:idx] + "\ntime.sleep(2)\n" + text_results[0].text[idx:]
+                    added_code = text_results[0].text[:idx] + "\ntime.sleep(5)\n" + text_results[0].text[idx:]
                     text_results[0].text = added_code
 
                 return text_results[0].text
