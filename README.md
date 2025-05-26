@@ -137,10 +137,12 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
    export KEY_FILENAME='<YOUR_KEY_FILENAME>'
    ```
 
-   (Optional) If you are experimenting on the RocketChat platform, you should set extra environment variables to simulate the agents the CUA will communicate with. `AZURE_MODEL_FOR_ROCKETCHAT_NPC` should follow the format "resource_name/deployment_name/version". Please refer to [Sotopia](https://github.com/sotopia-lab/sotopia/blob/v0.1.2/sotopia/generation_utils/generate.py#L342) for details.
+   (Optional) If you are experimenting on the RocketChat platform, you should set extra environment variables to simulate the agents the CUA will communicate with. 
+   Since Sotopia is built on LangChain, we follow their documentations for setting environment variables `AZURE_OPENAI_API_KEY` and `AZURE_MODEL_FOR_ROCKETCHAT_NPC`.
+   `AZURE_MODEL_FOR_ROCKETCHAT_NPC` should follow the format "resource_name/deployment_name/version". Please refer to the [Langchain documentation](https://python.langchain.com/api_reference/openai/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html) and [Sotopia](https://github.com/sotopia-lab/sotopia/blob/v0.1.2/sotopia/generation_utils/generate.py#L342) for details.
 
    ```bash
-   export AZURE_API_KEY='<YOUR_AZURE_API_KEY>'
+   export AZURE_OPENAI_API_KEY='<YOUR_AZURE_API_KEY>'
    export AZURE_MODEL_FOR_ROCKETCHAT_NPC='<YOUR_AZURE_MODEL>'
    ```
 
