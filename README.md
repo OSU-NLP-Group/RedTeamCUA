@@ -140,7 +140,7 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
    (Optional) If you are experimenting on the RocketChat platform, you should set extra environment variables to simulate the agents the CUA will communicate with. `AZURE_MODEL_FOR_ROCKETCHAT_NPC` should follow the format "resource_name/deployment_name/version". Please refer to [Sotopia](https://github.com/sotopia-lab/sotopia/blob/v0.1.2/sotopia/generation_utils/generate.py#L342) for details.
 
    ```bash
-   export AZURE_OPENAI_API_KEY='<YOUR_AZURE_OPENAI_API_KEY>'
+   export AZURE_API_KEY='<YOUR_AZURE_API_KEY>'
    export AZURE_MODEL_FOR_ROCKETCHAT_NPC='<YOUR_AZURE_MODEL>'
    ```
 
