@@ -1,6 +1,6 @@
 from copy import deepcopy
 from mm_agents.prompts import PROMPT_FOR_COUNTERING_PERMISSION_REQUEST
-
+from termcolor import cprint
 
 # to_return can be "image" or "image_and_text"
 def convert_for_openai_cua_utlis_1(messages, use_last=False, to_return="image"):
@@ -302,7 +302,11 @@ def scale_coordinates(source, x: int, y: int, width: int = 1920, height: int = 1
     y_scaling_factor = target_dimension["height"] / height
     if source == "API":
         if x > width or y > height:
-            raise ValueError(f"Coordinates {x}, {y} are out of bounds")
+            # raise ValueError(f"Coordinates {x}, {y} are out of bounds")
+            cprint(f"Coordinates {x}, {y} are out of bounds. Here, we simply cut the coordinates to the boundary.", "red")
+            x = min(x, width)
+            y = min(y, height)
+            cprint(f"The scaled coordinates (after scaling) are {x / x_scaling_factor}, {y / y_scaling_factor}. Note that they are obviously out of bounds because of the models' limited grounding capability.", "red")
         # scale up
         return round(x / x_scaling_factor), round(y / y_scaling_factor)
     elif source == "Computer":
