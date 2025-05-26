@@ -26,7 +26,7 @@ pip install -r requirements.txt
 pip install sotopia==0.1.2
 ```
 
-Or feel free use `uv` to quickly build it by:
+Or feel free to use `uv` to quickly build it by:
 ```bash
 uv sync
 source .venv/bin/activate
