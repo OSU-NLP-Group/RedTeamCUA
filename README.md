@@ -109,20 +109,7 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
 ## 🚀 Experiment
 1. Set Environment Variables
 
-   First, configure the domain for each web platform:
-
-   ```bash
-   export REDDIT='<your_reddit_domain>'
-   export OWNCLOUD='<your_owncloud_domain>'
-   export ROCKETCHAT='<your_rocketchat_domain>'
-
-   # example
-   # export REDDIT=3.95.15.18
-   # export OWNCLOUD=34.230.47.106
-   # export ROCKETCHAT=34.230.47.106
-   ```
-
-   Set your API keys for baseline CUAs.
+   First, set your API keys for baseline CUAs.
 
    For Claude models:
    ```bash
@@ -150,15 +137,11 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
    export KEY_FILENAME='<YOUR_KEY_FILENAME>'
    ```
 
-   (Optional) If you are experimenting on the RocketChat platform, you should set extra environment variables to simulate the agents the CUA will communicate with.
+   (Optional) If you are experimenting on the RocketChat platform, you should set extra environment variables to simulate the agents the CUA will communicate with. `AZURE_MODEL_FOR_ROCKETCHAT_NPC` should follow the format "resource_name/deployment_name/version". Please refer to [Sotopia](https://github.com/sotopia-lab/sotopia/blob/v0.1.2/sotopia/generation_utils/generate.py#L342) for details.
 
    ```bash
-   export SERVER_HOSTNAME='<your_rocketchat_domain>'
-
    export AZURE_OPENAI_API_KEY='<YOUR_AZURE_OPENAI_API_KEY>'
-   export AZURE_API_BASE_FOR_ROCKETCHAT_NPC='<YOUR_AZURE_API_BASE>'
    export AZURE_MODEL_FOR_ROCKETCHAT_NPC='<YOUR_AZURE_MODEL>'
-   export AZURE_API_VERSION_FOR_ROCKETCHAT_NPC='<YOUR_AZURE_API_VERSION>'
    ```
 
 3. Generate Configs
@@ -172,7 +155,25 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
 
 4. Run the Experiments
 
-   1. If you are using VMware as the provider, run:
+   1. If you are using VMware as the provider, first configure the domain for each web platform:
+
+      ```bash
+      export REDDIT='<your_reddit_domain>'
+      export OWNCLOUD='<your_owncloud_domain>'
+      export ROCKETCHAT='<your_rocketchat_domain>'
+
+      export SERVER_HOSTNAME='<your_rocketchat_domain>'
+
+      # example
+      # export REDDIT=3.95.15.18
+      # export OWNCLOUD=34.230.47.106
+      # export ROCKETCHAT=34.230.47.106
+      
+      # export SERVER_HOSTNAME=34.230.47.106
+      ```
+   
+   
+      then run:
          
       ```bash
       python run.py \

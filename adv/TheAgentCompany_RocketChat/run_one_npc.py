@@ -15,14 +15,7 @@ logging.basicConfig(
     ],
 ) 
 
-
-os.environ['AZURE_OPENAI_API_KEY'] = os.getenv('AZURE_API_KEY')
-os.environ['AZURE_API_BASE_FOR_ROCKETCHAT_NPC'] = os.getenv('AZURE_API_BASE_FOR_ROCKETCHAT_NPC')
-os.environ['AZURE_MODEL_FOR_ROCKETCHAT_NPC'] = os.getenv('AZURE_MODEL_FOR_ROCKETCHAT_NPC')
-os.environ['AZURE_API_VERSION_FOR_ROCKETCHAT_NPC'] = os.getenv('AZURE_API_VERSION_FOR_ROCKETCHAT_NPC')
-
-
-MODEL_NAME = os.environ['AZURE_MODEL_FOR_ROCKETCHAT_NPC']
+MODEL_NAME = os.getenv('AZURE_MODEL_FOR_ROCKETCHAT_NPC')
 
 
 # HACK: sotopia is not compatible with LITELLM, so we have to remove
