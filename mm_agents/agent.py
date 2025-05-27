@@ -36,6 +36,8 @@ from mm_agents.utils import convert_for_openai_cua, convert_for_claude_cua, adju
 
 from openai import AzureOpenAI
 from anthropic import AnthropicBedrock
+import anthropic
+from botocore.exceptions import ClientError, BotoCoreError
 import httpx
 
 logger = logging.getLogger("desktopenv.agent")
@@ -699,10 +701,18 @@ class PromptAgent:
                 InternalServerError,
                 BadRequest,
 
+                # Anthropic exceptions
+                BotoCoreError,
+                ClientError,
+                anthropic.RateLimitError,
+                anthropic.APIConnectionError,
+                anthropic.APIStatusError,
+                anthropic.APIError,
+
                 # Groq exceptions
                 # todo: check
         ),
-        interval=30,
+        interval=60,  # Increased from 30 to 60 seconds
         max_tries=10
     )
     def call_llm(self, payload):
