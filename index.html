@@ -473,7 +473,11 @@
             <ol>
               <li style="margin-bottom: 5px;"><strong style="color: red;">CUA Vulnerabilities:</strong> Our evaluation reveals significant indirect prompt injection vulnerabilities across all frontier CUAs: Claude 3.7 Sonnet | CUA demonstrates an <strong style="color: red;">Attack Success Rate (ASR) of 42.9%</strong>, while Operator, the most secure CUA evaluated, still exhibits an<strong style="color: red;"> ASR of 7.6%.</strong></li>
               <li style="margin-bottom: 5px;"><strong style="color: red;">Harmful Attempts:</strong> CUAS often <em>attempt to</em> execute adversarial tasks with an <strong style="color: red;">Attempt Rate (AR) as high as 92.5%</strong>, failing to complete them due to capability limitations rather than adversarial robustness. This indicates that future CUA capbility advancements could amplify risks without coinciding defense improvements.</li>
-              <li style="margin-bottom: 5px;"><strong style="color: red;">End2End:</strong> Despite capability limitations, we observe <strong style="color: red;">concerning ASRs of up to 50% in realistic end-to-end settings</strong>, indicating that CUA threats are no longer hypothetical and can already manifest as tangible risks to users and computer systems.</li>
+              <li><strong style="color: red;">End2End:</strong> 
+                <ul style="margin-bottom: 5px;">
+                  <li>Despite capability limitations, we observe <strong style="color: red;">concerning ASRs of up to 50% in realistic end-to-end settings</strong>, indicating that CUA threats are no longer hypothetical and can already manifest as tangible risks to users and computer systems.</li>
+                  <li>Notably, the recently released <strong style="color: red;">Claude 4 Opus achieves a 48% ASR in the End2End setting</strong>, highlighting the persistence of this critical vulnerability despite substantial enhancements to agentic capabilities in Anthropic's most advanced CUA to date. </li>
+                </ul> 
               <li><strong style="color: red;">Defense Implications:</strong> While defense approaches such as built-in confirmation and safety checks from Operator and defensive system prompts can substantially reduce ASR, notable CUA vulnerabilities persist, especially in the absence of reliable human oversight. This underscores the critical need for further development of dedicated defense strategies to enable capable and secure CUAs in the future.</li>
             </ol>
             <p>
@@ -504,7 +508,7 @@
           <ol>
             <li><strong>Automated Adversarial Injection</strong>, featuring  platform-specific scripts using SQL commands to support injection into all three of our available web platforms. </li>
             <li><strong>Flexible Adversarial Scenario Configuration</strong>, extending OSWorld's configuration setup to enable custom injection content and target locations, specification of SQL commands used to perform adversarial injection, and the uploading of files to be targeted within adversarial scenarios.</li>
-            <li><strong>Decoupled Eval</strong>, a setting which uses pre-processed actions to directly navigate CUAs to the location of malicious injection for focused analysis of CUA vulnerabilities. The Decoupled Eval setting enables us to distinguish true agent security from limitations to current benign capabilities, where the inability to properly navigate to the site of adversarial injection does not imply that a CUA is robust to manipulation when directly encountering adversarial injection.</li>
+            <li><strong>Decoupled Eval</strong>, a setting which uses pre-processed actions to directly navigate CUAs to the location of malicious injection for focused analysis of CUA vulnerabilities. The <em>Decoupled Eval</em> setting enables us to distinguish true agent security from limitations to current benign capabilities, where the inability to properly navigate to the site of adversarial injection does not imply that a CUA is robust to manipulation when directly encountering adversarial injection.</li>
           </ol>
           <p>
             Our approach introduces key benefits for systematic adversarial testing of CUAs compared to prior approaches, including 1) an interactive interface to explore harms only emerging in real-world GUI interaction, 2) isolated web and OS environments to enable full exploration of adversarial risks without real-world harms, and 3) hybrid Web+OS interaction to support testing cross-environment adversarial scenarios spanning both interfaces simultaneously.
@@ -1047,7 +1051,7 @@ p, li, div {
         <div class="content has-text-justified">
           <ul style="list-style-type: disc; margin-left: 0.5em; padding-left: 1em;">
             <li><strong>Adapted LLM-based Agents</strong>: GPT-4o, Claude 3.5 Sonnet (v2), Claude 3.7 Sonnet</li>
-            <li><strong>Specialized Computer-Use Agents</strong>: Operator, Claude 3.5 Sonnet (v2) | CUA, Claude 3.7 Sonnet | CUA</li>
+            <li><strong>Specialized Computer-Use Agents</strong>: Operator, Claude 3.5 Sonnet (v2) | CUA, Claude 3.7 Sonnet | CUA, Claude 4 Opus | CUA</li>
             <li><strong>Action Space</strong>: pyautogui (by following OSWorld)</li>
             <li><strong>Observation Space</strong>: Screenshot</li>
             <li>
@@ -1316,22 +1320,44 @@ p, li, div {
           <section class="hero teaser" id="overview">
             <div class="container is-max-desktop">
               <br>
+              <br>
               <h2 class="title is-3 has-text-centered">Ablations</h2>
-              <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+              <div class="content has-text-centered">
+                <img src="static/images/ASR_model_end2end_comparison_claude4.png" alt="Framework Overview" style="width: 100%; max-width: 800px;"/>
+               <p style="font-size: 15px;"> <strong>ASR</strong> comparison between <em>Decoupled Eval</em> and <em>End2End</em> settings.</p>
+               <p style="font-size: 13px;"> *We only evaluate Claude 4 Opus | CUA in the End2End setting due to its substantial cost.</p>
+            </div>
+          </section>
+
+          <section class="hero teaser" id="overview">
+            <div class="container is-max-desktop">
+              <br>
+              <br>
+              <div class="content has-text-centered">
+               <img src="static/images/ASR_model_defense_comparison.png" alt="Framework Overview" style="width: 100%; max-width: 800px;"/>
+               <p style="font-size: 15px;"> <strong>ASR</strong> comparison with and without defensive system prompt (DSP in the legend).</p>
+            </div>
+          </section>
+
+          <!-- <section class="hero teaser" id="overview">
+            <div class="container is-max-desktop">
+              <br>
+              <h2 class="title is-3 has-text-centered">Ablations</h2>
+              <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;"> -->
                 <!-- Left video -->
-                <div style="text-align: center;">
+                <!-- <div style="text-align: center;">
                   <img src="static/images/ASR_model_defense_comparison.png" alt="Framework Overview" style="width: 100%; max-width: 1000px;"/>
                   <p style="font-size: 15px;"> <strong>ASR</strong> comparison with and without defensive system prompt (DSP in the legend).</p>
-                </div>
+                </div> -->
 
                 <!-- Right video -->
-                <div style="text-align: center;">
-                  <img src="static/images/ASR_model_end2end_comparison.png" alt="Framework Overview" style="width: 100%; max-width: 1000px;"/>
+                <!-- <div style="text-align: center;">
+                  <img src="static/images/ASR_model_end2end_comparison_claude4.png" alt="Framework Overview" style="width: 100%; max-width: 1000px;"/>
                 <p style="font-size: 15px;"> <strong>ASR</strong> comparison between <em>Decoupled Eval</em> and <em>End-to-End</em> settings.</p>
                 </div>
               </div>
             </div>
-          </section>
+          </section> -->
 
            <section class="section" id="BibTeX">
               <div class="container is-max-desktop content">
