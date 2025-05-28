@@ -86,7 +86,7 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
 
       2. Configure `IMAGE_ID_MAP`:
       
-         To preserve anonymity, the specific AMI ID will not be disclosed at this stage. Further details will be provided upon the project's public release.
+         The information about specific pre-built AMIs, for all supported platforms in our project, will be disclosed soon! Stay tuned!
 
 #### Docker-based Web
 1. **VMware**
