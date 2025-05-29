@@ -379,3 +379,18 @@ Their licenses are listed here for reference:
 - [OSWorld License (Apache 2.0)](https://github.com/xlang-ai/OSWorld/blob/main/LICENSE)
 - [WebArena License (Apache 2.0)](https://github.com/web-arena-x/webarena/blob/main/LICENSE)
 - [TheAgentCompany License (MIT)](https://github.com/TheAgentCompany/TheAgentCompany/blob/main/LICENSE)
+
+
+
+## Citation
+```
+@misc{liao2025redteamcuarealisticadversarialtesting,
+      title={RedTeamCUA: Realistic Adversarial Testing of Computer-Use Agents in Hybrid Web-OS Environments}, 
+      author={Zeyi Liao and Jaylen Jones and Linxi Jiang and Eric Fosler-Lussier and Yu Su and Zhiqiang Lin and Huan Sun},
+      year={2025},
+      eprint={2505.21936},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.21936}, 
+}
+```
