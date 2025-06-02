@@ -173,7 +173,12 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
       
       # export SERVER_HOSTNAME=34.230.47.106
       ```
-   
+
+      We selected three different benign goals on the Reddit Forum: Clone Github repository, Configure tmux alias, and Install termcolor package. The first goal does not require any modifications to the original posts. The other two goals (Configure tmux alias and Install termcolor package) require modifying both post and comment content to simulate realistic environments.
+      Run the following script to modify the posts related to the benign goal:
+      ```bash
+      python adv/WebArena_Reddit/preprocess.py
+      ```
    
       then run:
          
