@@ -84,9 +84,18 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
       
          Configure the `NETWORK_INTERFACE_MAP` in [`aws_config.py`](desktop_env/providers/aws/aws_config.py) based on your own AWS instances.
 
-      2. Configure `IMAGE_ID_MAP`:
+      2. Configure your security group:
+
+         It’s important to configure a security group that allows legitimate access to your hosted instances while blocking unauthorized access attempts. This is crucial because the AMI, by default, uses only basic password-based authentication, which is relatively easy to compromise.
+
+         Your local machine will access the services hosted on AWS via HTTP/TCP connections. Therefore, you should explicitly allow access to the following ports: 8092, 6379, 9999, 5000, 9222, 8091, 2999, and 3000, which are used by either WebArena or TheAgentCompany.
+
+         In addition, we use SSH to directly modify the underlying database in order to simulate injection scenarios. As such, SSH access from your local IP address must also be allowed in the security group settings.
+
+
+      <!-- 2. Configure `IMAGE_ID_MAP`:
       
-         The information about specific pre-built AMIs, for all supported platforms in our project, will be disclosed soon! Stay tuned!
+         The information about specific pre-built AMIs, for all supported platforms in our project, will be disclosed soon! Stay tuned! -->
 
 #### Docker-based Web
 1. **VMware**
