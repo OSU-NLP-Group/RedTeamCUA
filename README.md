@@ -92,6 +92,12 @@ Below, we further provide more details on setting up the VM-based OS and Docker-
 
          In addition, we use SSH to directly modify the underlying database in order to simulate injection scenarios. As such, SSH access from your local IP address must also be allowed in the security group settings.
 
+      3. Configure your AWS credentials by using `aws configure`, which will prompt you for:
+
+         - AWS Access Key ID
+         - AWS Secret Access Key
+         - Default region name (Optional, you can press enter)
+
 
       <!-- 2. Configure `IMAGE_ID_MAP`:
       
