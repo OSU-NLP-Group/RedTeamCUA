@@ -24,7 +24,6 @@ This is the official codebase for **RedTeamCUA**, a flexible adversarial testing
   <img src="figures/RedTeamCUA_fig1.png" width="95%" title="Introduction Figure">
 </div>
 
-<br>
 
 Our sandbox supports key features tailored for systematic red-teaming of CUAs, including:
 - **Automated Adversarial Injection**, featuring platform-specific scripts using SQL commands to support injection into all three of our available web platforms.
