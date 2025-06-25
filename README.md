@@ -1,4 +1,4 @@
-# RedTeamCUA: Towards Realistic Adversarial Testing of CUAs in Hybrid Web-OS Environments
+# RedTeamCUA: Towards Realistic Adversarial Testing of Computer-Use Agents in Hybrid Web-OS Environments
 
 <!-- 
 ## 🎥 Video Examples
@@ -9,6 +9,37 @@ The following videos showcase examples where indirect prompt injection on three 
 | Claude 3.7 Sonnet CUA | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/reddit_decoupled.mp4">reddit_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/reddit_end2end.mp4">reddit_end2end.mp4</a> |
 | Operator              | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/owncloud_decoupled.mp4">owncloud_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/owncloud_end2end.mp4">owncloud_end2end.mp4</a> |
 | Claude 3.7 Sonnet CUA | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/rocketchat_decoupled.mp4">rocketchat_decoupled.mp4</a> | <a href="https://anonymous.4open.science/r/RedTeamCUA-Videos-CFE4/rocketchat_end2end.mp4">rocketchat_end2end.mp4</a> | -->
+
+This is the official codebase for **RedTeamCUA**, a flexible adversarial testing framework for CUAs that constructs a hybrid environment sandbox combining a VM-based OS from [OSWorld](https://os-world.github.io/) and Docker-based web replicas from [WebArena](https://webarena.dev/) and [TheAgentCompany](https://the-agent-company.com/), enabling controlled and systematic analysis of CUA vulnerabilities in adversarial scenarios spanning web and OS environments. 
+
+<p align="center">
+[<a href="https://osu-nlp-group.github.io/RedTeamCUA/">Website</a>] •
+[<a href="https://arxiv.org/abs/2505.21936">Paper</a>] •
+[<a href="https://x.com/LiaoZeyi/status/1928259211932389419">Twitter</a>]
+</p>
+
+<br>
+
+<div align="center">
+  <img src="figures/RedTeamCUA_fig1.png" width="95%" title="Introduction Figure">
+</div>
+
+<br>
+
+Our sandbox supports key features tailored for systematic red-teaming of CUAs, including:
+- **Automated Adversarial Injection**, featuring platform-specific scripts using SQL commands to support injection into all three of our available web platforms.
+- **Flexible Adversarial Scenario Configuration**, extending OSWorld's configuration setup to enable custom injection content and target locations, specification of SQL commands used to perform adversarial injection, and the uploading of files to be targeted within adversarial scenarios.
+- **Decoupled Eval**, a setting which uses pre-processed actions to directly navigate CUAs to the location of malicious injection for focused analysis of CUA vulnerabilities. The Decoupled Eval setting enables us to distinguish true agent security from limitations to current benign capabilities, where the inability to properly navigate to the site of adversarial injection does not imply that a CUA is robust to manipulation when directly encountering adversarial injection.
+
+<br>
+
+<div align="center">
+  <img src="figures/RedTeamCUA_fig2.png" width="95%" title="Introduction Figure">
+</div>
+
+<br>
+
+Using RedTeamCUA, we develop **RTC-Bench**, a comprehensive benchmark with 864 examples designed to allow for systematic analysis of CUA vulnerabilities against indirect prompt injection in realistic and diverse adversarial scenarios. RTC-Bench features adversarial examples that investigate realistic, hybrid attack scenarios spanning web and OS environments and focuses on fundamental security violations derived from the CIA triad (Confidentiality, Integrity, and Availability).
 
 ## 🛠️ Setup
 
